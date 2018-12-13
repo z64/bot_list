@@ -1,1 +1,6 @@
 language: crystal
+
+script:
+  - "sed -i '9 a\\    branch: master' shard.yml && shards update"
+  - crystal tool format --check
+  - crystal spec
