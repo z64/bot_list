@@ -1,0 +1,13 @@
+name: bot_list
+version: 0.1.0
+
+authors:
+  - Zac Nowicki <zachnowicki@gmail.com>
+
+dependencies:
+  discordcr:
+    github: meew0/discordcr
+
+crystal: 0.26.1
+
+license: MIT
