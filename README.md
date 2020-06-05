@@ -34,15 +34,15 @@ class MyBotList < BotList::Provider
   def update(cache)
     payload = {guilds: cache.guilds.size}.to_json
     headers = HTTP::Headers{
-      "Content-Type": "application/json",
-      "Authorization": ENV["MYBOTLIST_TOKEN"]
+      "Authorization" => ENV["MYBOTLIST_TOKEN"],
+      "Content-Type": "application/json"
     }
     client_id = cache.resolve_current_user.id
     HTTP::Client.post("https://mybots.com/api/bots/#{client_id}", headers, payload)
   end
 end
 
-bot_list.add_provder(MyBotList.new)
+bot_list.add_provider(MyBotList.new)
 
 # Update every provider with our stats every minute:
 bot_list.update_every(1.minute)
