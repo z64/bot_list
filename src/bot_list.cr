@@ -24,7 +24,7 @@ module BotList
     # Adds an existing provider from one of `PROVIDERS` by name.
     #
     # ```
-    # bot_list.add_provider("discordbots.org")
+    # bot_list.add_provider("top.gg")
     # bot_list.add_provider("discord.bots.gg")
     # bot_list.add_provider("unknown") # Exception
     # ```

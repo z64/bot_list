@@ -48,7 +48,7 @@ describe BotList::Client do
     client.add_provider("test")
     client.providers.should eq [provider]
 
-    expect_raises(Exception, %(Unknown provider: "foo". Available providers: "discordbots.org", "discord.bots.gg", "test")) do
+    expect_raises(Exception, %(Unknown provider: "foo". Available providers: "top.gg", "discord.bots.gg", "test")) do
       client.add_provider("foo")
     end
   end
