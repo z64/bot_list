@@ -78,8 +78,8 @@ module BotList
 
     # Logging for a general exception raised from a provider's request
     private def log_error(provider : Provider, ex : Exception)
-      Log.error(exception: ex) { "Failed to post stats to provider #{provider.name.inspect} (#{ex.class}, #{ex.message})" }
-      Log.error { ex.backtrace }
+      Log.error(exception: ex) { "Failed to post stats to provider #{provider.name.inspect}" }
+      Log.error { ex.inspect_with_backtrace }
     end
   end
 end
