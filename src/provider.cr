@@ -13,22 +13,22 @@ module BotList
 
   # Collection of well-known providers.
   PROVIDERS = {
-    "discordbots.org" => DBotsDotOrgProvider.new,
+    "top.gg"          => DBotsDotOrgProvider.new,
     "discord.bots.gg" => DBotsDotGGProvider.new,
   }
 
-  # Provider for https://discordbots.org. If no token is passed to
-  # the constructor, it will be read from `ENV["DBOTSDOTORG_TOKEN"]`.
+  # Provider for https://top.gg. If no token is passed to
+  # the constructor, it will be read from `ENV["TOPGG_TOKEN"]`.
   class DBotsDotOrgProvider < Provider
     def initialize(@token : String? = nil)
     end
 
     def token
-      @token ||= ENV["DBOTSDOTORG_TOKEN"]
+      @token ||= ENV["TOPGG_TOKEN"]
     end
 
     def name
-      "discordbots.org"
+      "top.gg"
     end
 
     def update(cache : Discord::Cache)
@@ -38,7 +38,7 @@ module BotList
         "Content-Type":    "application/json",
       }
       HTTP::Client.post(
-        "https://discordbots.org/api/bots/stats",
+        "https://top.gg/api/bots/stats",
         headers,
         payload
       )
@@ -52,7 +52,7 @@ module BotList
     end
 
     def token
-      @token ||= ENV["DBOTSGG_TOKEN"]
+      @token ||= ENV["BOTSGG_TOKEN"]
     end
 
     def name

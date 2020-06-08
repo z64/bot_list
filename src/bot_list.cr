@@ -9,23 +9,22 @@ module BotList
     # The existing providers added to this client.
     getter providers : Array(Provider)
 
-    def self.new(client : Discord::Client, logger : Logger = Logger.new(STDOUT))
+    def self.new(client : Discord::Client)
       if cache = client.cache
-        new(cache, logger)
+        new(cache)
       else
         raise "Client must have a cache set"
       end
     end
 
-    def initialize(@cache : Discord::Cache, @logger : Logger = Logger.new(STDOUT))
+    def initialize(@cache : Discord::Cache)
       @providers = [] of Provider
-      @logger.progname = "bot-list" if @logger.progname.nil?
     end
 
     # Adds an existing provider from one of `PROVIDERS` by name.
     #
     # ```
-    # bot_list.add_provider("discordbots.org")
+    # bot_list.add_provider("top.gg")
     # bot_list.add_provider("discord.bots.gg")
     # bot_list.add_provider("unknown") # Exception
     # ```
@@ -66,28 +65,21 @@ module BotList
 
     # Debug logging for successful posts to a provider
     private def log_success(provider : Provider, response : HTTP::Client::Response)
-      return unless @logger.debug?
-      @logger.debug(<<-DOC)
-      Posted stats to #{provider.name.inspect} (#{response.status_code} #{response.status_message})
-      #{response.body? ? response.body : "(No body)"}
-      DOC
+      Log.debug { "Posted stats to #{provider.name.inspect} (#{response.status_code} #{response.status_message})" }
+      Log.debug { "#{response.body? ? response.body : "(No body)"}" }
     end
 
     # Logging for when a request was sent successfully, but the provider
     # service returned a failed response.
     private def log_error(provider : Provider, response : HTTP::Client::Response)
-      @logger.error(<<-DOC)
-      Failed to post stats to provider #{provider.name.inspect} (#{response.status_code} #{response.status_message})
-      #{response.body? ? response.body : "(No body)"}
-      DOC
+      Log.error { "Failed to post stats to provider #{provider.name.inspect} (#{response.status_code} #{response.status_message})" }
+      Log.error { "#{response.body? ? response.body : "(No body)"}" }
     end
 
     # Logging for a general exception raised from a provider's request
     private def log_error(provider : Provider, ex : Exception)
-      @logger.error(<<-DOC)
-      Failed to post stats to provider #{provider.name.inspect} (#{ex.class}, #{ex.message})
-      #{ex.backtrace}
-      DOC
+      Log.error(exception: ex) { "Failed to post stats to provider #{provider.name.inspect}" }
+      Log.error { ex.inspect_with_backtrace }
     end
   end
 end

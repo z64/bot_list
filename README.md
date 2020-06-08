@@ -2,7 +2,7 @@
 
 A shard for managing your Crystal bot's listings on multiple bot listing providers.
 
-Write your own, or get started right away with https://discordbots.org or https://discord.bots.gg.
+Write your own, or get started right away with https://top.gg or https://discord.bots.gg.
 
 ## Installation
 
@@ -22,7 +22,7 @@ require "bot_list"
 bot_list = BotList::Client.new(discord_client)
 
 # Add some stock providers:
-bot_list.add_provider("discordbots.org")
+bot_list.add_provider("top.gg")
 bot_list.add_provider("discord.bots.gg")
 
 # Create a custom provider by implementing `name` and `update(cache)`:
@@ -34,15 +34,15 @@ class MyBotList < BotList::Provider
   def update(cache)
     payload = {guilds: cache.guilds.size}.to_json
     headers = HTTP::Headers{
-      "Content-Type": "application/json",
-      "Authorization": ENV["MYBOTLIST_TOKEN"]
+      "Authorization" => ENV["MYBOTLIST_TOKEN"],
+      "Content-Type": "application/json"
     }
     client_id = cache.resolve_current_user.id
     HTTP::Client.post("https://mybots.com/api/bots/#{client_id}", headers, payload)
   end
 end
 
-bot_list.add_provder(MyBotList.new)
+bot_list.add_provider(MyBotList.new)
 
 # Update every provider with our stats every minute:
 bot_list.update_every(1.minute)
